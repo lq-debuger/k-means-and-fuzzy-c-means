@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
+# import numpy
 from pylab import *
-from numpy import *
+# from numpy import *
 import pandas as pd
 import numpy as np
 import operator
@@ -11,13 +12,13 @@ import copy
 import time
 
 # 读取.csv文件
-data_full = pd.read_csv("Iris.csv")
+data_full = pd.read_csv("test.csv")
 # 得到表格的列名
 columns = list(data_full.columns)
 # 前四个列名是鸢尾花特征（最后一列是鸢尾花种类）
-features = columns[0:len(columns) - 1]
+# features = columns[0:len(columns)]
 # 提取需要聚类的数据（根据列名提取前四列）
-data = data_full[features]
+data = data_full[columns]
 # 分类数
 c = 3
 # 最大迭代数
@@ -27,7 +28,7 @@ Epsilon = 0.00000001
 # 样本数，行数
 n = len(data)
 # 模糊参数
-m = 1.5
+m = 1.1
 
 
 # 初始化模糊矩阵（隶属度矩阵 U）
@@ -73,7 +74,7 @@ def calculateCenter(U):
         numerator = map(sum, zip(*temp_num))
         # 求聚类中心
         center = [z / denominator for z in numerator]
-        print(center)
+        # print(center)
         V.append(center)
     return V
 
@@ -82,6 +83,7 @@ def calculateCenter(U):
 def U_update(U, V):
     # 2/(m-1)
     p = float(2 / (m - 1))
+    # p = 2.0/(m-1)
     for i in range(n):
         # 取出文件中的每一行数据
         x = list(data.iloc[i])
@@ -132,53 +134,33 @@ def getResult(U):
 
 # 主函数
 def FCM():
-    start = time.time()
     # 初始化模糊矩阵 U
     U = initialize()
     # 迭代，最大迭代次数：100
     V, U = iteration(U)
     # 获得聚类结果
     results = getResult(U)
-    # 打印聚类所用时长
-    # print("用时：{0} s".format(time.time() - start))
+    # 打印聚类所用
     return results, V, U
 
+figure1,axes = plt.subplots(2,5,figsize=(100,100))
 
-# Xie-Beni聚类有效性
-def xie_beni(membership_mat, center, data):
-    sum_cluster_distance = 0
-    min_cluster_center_distance = inf
-    for i in range(c):
-        for j in range(n):
-            sum_cluster_distance = sum_cluster_distance + membership_mat[j][i] ** 2 * sum(
-                power(data[j, :] - center[i, :], 2))  # 计算类一致性
-    for i in range(c - 1):
-        for j in range(i + 1, c):
-            cluster_center_distance = sum(power(center[i, :] - center[j, :], 2))  # 计算类间距离
-            if cluster_center_distance < min_cluster_center_distance:
-                min_cluster_center_distance = cluster_center_distance
-    return sum_cluster_distance / (n * min_cluster_center_distance)
+for i in range(10):
+    print(m)
+    results, V, U = FCM()
+    V_array = np.array(V)
+    DATA = np.array(data)
+    results = np.array(results)
+    j = int(i/5)
+    k = int(i%5)
+    axes[j,k].set_xlim(0,30)
+    axes[j,k].set_ylim(0,30)     
+    axes[j,k].scatter(DATA[nonzero(results == 0), 0], DATA[nonzero(results == 0), 1], marker='o', color='r', label='0', s=30)
+    axes[j,k].scatter(DATA[nonzero(results == 1), 0], DATA[nonzero(results == 1), 1], marker='+', color='b', label='1', s=30)
+    axes[j,k].scatter(DATA[nonzero(results == 2), 0], DATA[nonzero(results == 2), 1], marker='*', color='g', label='2', s=30)
+    # # 中心点
+    axes[j,k].scatter(V_array[:, 0], V_array[:, 1], marker='x', color='m', s=50)
+    axes[j,k].set_title("m={:.2f}".format(m))
+    m += 0.3
 
-
-# matplotlib需要array类型的数据
-results, V, U = FCM()
-V_array = np.array(V)
-DATA = np.array(data)
-results = np.array(results)
-
-# Xie-Beni聚类有效性
-# print("聚类有效性：", xie_beni(U, V_array, DATA))
-
-# 将DATA的第一列和第二列作为x、y轴绘图
-xlim(4, 8)
-ylim(1, 5)
-# 创建一个绘图窗口
-plt.figure(1)
-# 画散点图
-# 样本点   其中nonzero(results==0)为取出0这一类的下标
-plt.scatter(DATA[nonzero(results == 0), 0], DATA[nonzero(results == 0), 1], marker='o', color='r', label='0', s=30)
-plt.scatter(DATA[nonzero(results == 1), 0], DATA[nonzero(results == 1), 1], marker='+', color='b', label='1', s=30)
-plt.scatter(DATA[nonzero(results == 2), 0], DATA[nonzero(results == 2), 1], marker='*', color='g', label='2', s=30)
-# 中心点
-plt.scatter(V_array[:, 0], V_array[:, 1], marker='x', color='m', s=50)
 plt.show()

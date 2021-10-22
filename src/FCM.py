@@ -144,10 +144,10 @@ def fuzzy(data, cluster_number, m):
 		C = []
 		for j in range(0, cluster_number):
 			current_cluster_center = []
-			for i in range(0, len(data[0])):
+			for i in range(0, len(data[0])):#列
 				dummy_sum_num = 0.0
 				dummy_sum_dum = 0.0
-				for k in range(0, len(data)):
+				for k in range(0, len(data)):#行
 					# 分子
 					dummy_sum_num += (U[k][j] ** m) * data[k][i]
 					# 分母
@@ -202,7 +202,7 @@ def checker_iris(final_location):
 if __name__ == '__main__':
 	
 	# 加载数据
-	data, cluster_location = import_data_format_iris("iris.txt")
+	data, cluster_location = import_data_format_iris("src/iris.txt")
 	# print_matrix(data)
  
 	# 随机化数据
