@@ -1,7 +1,7 @@
-# -*- coding:utf-8 -*-
-# import numpy
+#-*- coding:utf-8 -*-
+import numpy
 from pylab import *
-# from numpy import *
+from numpy import *
 import pandas as pd
 import numpy as np
 import operator
@@ -153,8 +153,8 @@ for i in range(10):
     results = np.array(results)
     j = int(i/5)
     k = int(i%5)
-    axes[j,k].set_xlim(0,30)
-    axes[j,k].set_ylim(0,30)     
+    axes[j,k].set_xlim(0,60)
+    axes[j,k].set_ylim(0,60)     
     axes[j,k].scatter(DATA[nonzero(results == 0), 0], DATA[nonzero(results == 0), 1], marker='o', color='r', label='0', s=30)
     axes[j,k].scatter(DATA[nonzero(results == 1), 0], DATA[nonzero(results == 1), 1], marker='+', color='b', label='1', s=30)
     axes[j,k].scatter(DATA[nonzero(results == 2), 0], DATA[nonzero(results == 2), 1], marker='*', color='g', label='2', s=30)

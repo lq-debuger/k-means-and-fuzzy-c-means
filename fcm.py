@@ -11,12 +11,10 @@ import copy
 import time
 
 # 读取.csv文件
-data_full = pd.read_csv("Iris.csv")
+data_full = pd.read_csv("test.csv")
 # 得到表格的列名
 columns = list(data_full.columns)
-# 前四个列名是鸢尾花特征（最后一列是鸢尾花种类）
-features = columns[0:len(columns) - 1]
-# 提取需要聚类的数据（根据列名提取前四列）
+features = columns[0:len(columns)]
 data = data_full[features]
 # 分类数
 c = 3
@@ -27,7 +25,7 @@ Epsilon = 0.00000001
 # 样本数，行数
 n = len(data)
 # 模糊参数
-m = 1.5
+m = 2
 
 
 # 初始化模糊矩阵（隶属度矩阵 U）
@@ -170,8 +168,8 @@ results = np.array(results)
 # print("聚类有效性：", xie_beni(U, V_array, DATA))
 
 # 将DATA的第一列和第二列作为x、y轴绘图
-xlim(4, 8)
-ylim(1, 5)
+xlim(0, 30)
+ylim(0, 30)
 # 创建一个绘图窗口
 plt.figure(1)
 # 画散点图
@@ -181,4 +179,5 @@ plt.scatter(DATA[nonzero(results == 1), 0], DATA[nonzero(results == 1), 1], mark
 plt.scatter(DATA[nonzero(results == 2), 0], DATA[nonzero(results == 2), 1], marker='*', color='g', label='2', s=30)
 # 中心点
 plt.scatter(V_array[:, 0], V_array[:, 1], marker='x', color='m', s=50)
+plt.title("fuzzy c-means m=2")
 plt.show()

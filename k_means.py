@@ -1,13 +1,14 @@
 '''
 Author: your name
 Date: 2021-10-21 16:19:16
-LastEditTime: 2021-10-21 16:37:05
+LastEditTime: 2021-10-24 22:35:39
 LastEditors: Please set LastEditors
 Description: In User Settings Edit
 FilePath: \python_test\k_means.py
 '''
 import numpy as np
 import random 
+import pandas as pd
 import matplotlib.pyplot as plt 
 
 def distance(point1, point2):  # 计算距离（欧几里得距离）
@@ -57,6 +58,17 @@ def predict(p_data, centers):  # 预测新样本点所在的类
     distances = [distance(p_data, centers[c]) for c in centers]  
     return np.argmin(distances)
 
-def if __name__ == '__main__':
-    data = np.random.randint(0,20,size=())
-    
+
+
+data_full = pd.read_csv("test.csv")
+# 得到表格的列名
+columns = list(data_full.columns)
+# 前四个列名是鸢尾花特征（最后一列是鸢尾花种类）
+# features = columns[0:len(columns)]
+# 提取需要聚类的数据（根据列名提取前四列）
+data = data_full[columns]
+
+data = np.array(data)
+
+centers, clusters = k_means(data,3)
+
