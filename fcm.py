@@ -11,10 +11,13 @@ import copy
 import time
 
 # 读取.csv文件
+# data_full = pd.read_csv("Iris.csv")
 data_full = pd.read_csv("test.csv")
 # 得到表格的列名
 columns = list(data_full.columns)
+# 前四个列名是鸢尾花特征（最后一列是鸢尾花种类）
 features = columns[0:len(columns)]
+# 提取需要聚类的数据（根据列名提取前四列）
 data = data_full[features]
 # 分类数
 c = 3
@@ -171,7 +174,7 @@ results = np.array(results)
 xlim(0, 30)
 ylim(0, 30)
 # 创建一个绘图窗口
-plt.figure(1)
+plt.figure(1,size=(10,10))
 # 画散点图
 # 样本点   其中nonzero(results==0)为取出0这一类的下标
 plt.scatter(DATA[nonzero(results == 0), 0], DATA[nonzero(results == 0), 1], marker='o', color='r', label='0', s=30)

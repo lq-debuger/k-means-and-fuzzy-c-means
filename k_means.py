@@ -1,7 +1,7 @@
 '''
 Author: your name
 Date: 2021-10-21 16:19:16
-LastEditTime: 2021-10-24 22:35:39
+LastEditTime: 2021-10-24 23:02:49
 LastEditors: Please set LastEditors
 Description: In User Settings Edit
 FilePath: \python_test\k_means.py
@@ -59,7 +59,6 @@ def predict(p_data, centers):  # 预测新样本点所在的类
     return np.argmin(distances)
 
 
-
 data_full = pd.read_csv("test.csv")
 # 得到表格的列名
 columns = list(data_full.columns)
@@ -71,4 +70,5 @@ data = data_full[columns]
 data = np.array(data)
 
 centers, clusters = k_means(data,3)
+
 
